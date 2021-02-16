@@ -11,9 +11,12 @@ root.title("Standard calculator")
 # print(path)
 # full_path = os.path.join(path, "pow.jpg")
 # print(full_path)
+fontStyle = tkFont.Font(size=32, family="Courier", weight="bold")
+window_maths = Entry(root, width=10, borderwidth=0, bg="#f2f2f2", justify='right', font=fontStyle)
+window_maths.grid(row=0, column=0, columnspan=4, padx=5, pady=5, ipady=2)
 
-window = Entry(root, width=35, borderwidth=1)
-window.grid(row=0, column=0, columnspan=4, padx=53, pady=80)
+window = Entry(root, width=10, borderwidth=0, bg="#f2f2f2", justify='right', font=fontStyle)
+window.grid(row=1, column=0, columnspan=4, padx=20, pady=12, ipady=22)
 # window.insert(0, "Insert your name")
 # ---------THE LOGIC ------------------
 
@@ -36,6 +39,8 @@ def button_add(elem=None):
     math = "addition"
     f_num = check_decimal(first_number)
     window.delete(0, END)
+    window_maths.delete(0, END)
+    window_maths.insert(0, '+')
 
 
 def button_subtract(elem=None):
@@ -45,6 +50,8 @@ def button_subtract(elem=None):
     math = "substract"
     f_num = check_decimal(first_number)
     window.delete(0, END)
+    window_maths.delete(0, END)
+    window_maths.insert(0, '-')
 
 
 def button_multiply(elem=None):
@@ -54,6 +61,8 @@ def button_multiply(elem=None):
     math = "multiplication"
     f_num = check_decimal(first_number)
     window.delete(0, END)
+    window_maths.delete(0, END)
+    window_maths.insert(0, 'x')
 
 
 def button_devide(elem=None):
@@ -63,6 +72,8 @@ def button_devide(elem=None):
     math = "division"
     f_num = check_decimal(first_number)
     window.delete(0, END)
+    window_maths.delete(0, END)
+    window_maths.insert(0, '/')
 
 
 def button_fraction():
@@ -124,6 +135,9 @@ def button_equal(elem=None):
         window.insert(0, round(f_num * check_decimal(second_number), 10))
     elif math == "division":
         window.insert(0, round(f_num / check_decimal(second_number), 10))
+
+    window_maths.delete(0, END)
+    window_maths.insert(0, '=')
 
 
 def check_decimal(number):
@@ -204,6 +218,7 @@ fontStyle = tkFont.Font(size=13, weight="bold")
 fontStyle2 = tkFont.Font(size=17)
 fontStyle3 = tkFont.Font(size=13)
 
+
 # Define buttons
 
 button_1 = Button(root, text="1", padx=29, pady=11, bg='white', bd=0, font=fontStyle, command=lambda: button_click(1))
@@ -236,31 +251,72 @@ button_back = Button(root, text="Back", padx=16, pady=12, bg='#e6e9eb', bd=0, fo
 
 # Put the buttons on the screen
 
-button_1.grid(row=5, column=0)
-button_2.grid(row=5, column=1)
-button_3.grid(row=5, column=2)
-button_4.grid(row=4, column=0)
-button_5.grid(row=4, column=1)
-button_6.grid(row=4, column=2)
-button_7.grid(row=3, column=0)
-button_8.grid(row=3, column=1)
-button_9.grid(row=3, column=2)
-button_0.grid(row=6, column=1)
+button_1.grid(row=6, column=0)
+button_2.grid(row=6, column=1)
+button_3.grid(row=6, column=2)
+button_4.grid(row=5, column=0)
+button_5.grid(row=5, column=1)
+button_6.grid(row=5, column=2)
+button_7.grid(row=4, column=0)
+button_8.grid(row=4, column=1)
+button_9.grid(row=4, column=2)
+button_0.grid(row=7, column=1)
 
-button_point.grid(row=6, column=2)
-button_plus_minus.grid(row=6, column=0)
+button_point.grid(row=7, column=2)
+button_plus_minus.grid(row=7, column=0)
 
-button_add.grid(row=5, column=3)
-button_equal.grid(row=6, column=3)
-button_clear.grid(row=1, column=2)
-button_subtract.grid(row=4, column=3)
-button_multiply.grid(row=3, column=3)
-button_devide.grid(row=2, column=3)
+button_add.grid(row=6, column=3)
+button_equal.grid(row=7, column=3)
+button_clear.grid(row=2, column=2)
+button_subtract.grid(row=5, column=3)
+button_multiply.grid(row=4, column=3)
+button_devide.grid(row=3, column=3)
 
-button_fraction.grid(row=2, column=0)
-button_pow.grid(row=2, column=1)
-button_sqrt.grid(row=2, column=2)
+button_fraction.grid(row=3, column=0)
+button_pow.grid(row=3, column=1)
+button_sqrt.grid(row=3, column=2)
 
-button_back.grid(row=1, column=3)
+button_back.grid(row=2, column=3)
+
+
+# ---- BUTTON COLOR HOVER -----------------------
+
+# function to change properties of button on hover
+def changeOnHover(button, on_hover, on_leave):
+    # adjusting backgroung of the widget
+    # background on entering widget
+    button.bind("<Enter>", func=lambda e: button.config(
+        background=on_hover))
+
+    # background color on leaving widget
+    button.bind("<Leave>", func=lambda e: button.config(
+        background=on_leave))
+
+
+changeOnHover(button_1, "#8c929c", "white")
+changeOnHover(button_2, "#8c929c", "white")
+changeOnHover(button_3, "#8c929c", "white")
+changeOnHover(button_4, "#8c929c", "white")
+changeOnHover(button_5, "#8c929c", "white")
+changeOnHover(button_6, "#8c929c", "white")
+changeOnHover(button_7, "#8c929c", "white")
+changeOnHover(button_8, "#8c929c", "white")
+changeOnHover(button_9, "#8c929c", "white")
+changeOnHover(button_0, "#8c929c", "white")
+
+changeOnHover(button_point, "#8c929c", "#e6e9eb")
+changeOnHover(button_plus_minus, "#8c929c", "#e6e9eb")
+changeOnHover(button_add, "#8c929c", "#e6e9eb")
+changeOnHover(button_equal, "#5285d9", "#9dbff5")
+
+changeOnHover(button_clear, "#8c929c", "#e6e9eb")
+changeOnHover(button_subtract, "#8c929c", "#e6e9eb")
+changeOnHover(button_multiply, "#8c929c", "#e6e9eb")
+
+changeOnHover(button_devide, "#8c929c", "#e6e9eb")
+changeOnHover(button_fraction, "#8c929c", "#e6e9eb")
+changeOnHover(button_pow, "#8c929c", "#e6e9eb")
+changeOnHover(button_sqrt, "#8c929c", "#e6e9eb")
+changeOnHover(button_back, "#8c929c", "#e6e9eb")
 
 root.mainloop()
