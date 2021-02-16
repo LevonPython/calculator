@@ -15,21 +15,21 @@ root.title("Standard calculator")
 window = Entry(root, width=35, borderwidth=1)
 window.grid(row=0, column=0, columnspan=4, padx=53, pady=80)
 # window.insert(0, "Insert your name")
+# ---------THE LOGIC ------------------
 
-
-# --------- THE LOGIC ------------
-def button_click(number):
+# --------- THE MAIN LOGIC ------------
+def button_click(number=None):
     # window.delete(0, END)
     current = window.get()
     window.delete(0, END)
     window.insert(0, f"{current}{number}")
 
 
-def button_clear():
+def button_clear(elem=None):
     window.delete(0, END)
 
 
-def button_add():
+def button_add(elem=None):
     first_number = window.get()
     global f_num
     global math
@@ -38,7 +38,7 @@ def button_add():
     window.delete(0, END)
 
 
-def button_subtract():
+def button_subtract(elem=None):
     first_number = window.get()
     global f_num
     global math
@@ -47,7 +47,7 @@ def button_subtract():
     window.delete(0, END)
 
 
-def button_multiply():
+def button_multiply(elem=None):
     first_number = window.get()
     global f_num
     global math
@@ -56,7 +56,7 @@ def button_multiply():
     window.delete(0, END)
 
 
-def button_devide():
+def button_devide(elem=None):
     first_number = window.get()
     global f_num
     global math
@@ -83,7 +83,7 @@ def button_sqrt():
     window.insert(0, round(math.sqrt(first_number)))
 
 
-def button_back():
+def button_back(elem=None):
     first_number = window.get()
     backed = str(first_number)[:-1]
     global f_num
@@ -91,7 +91,7 @@ def button_back():
     window.delete(0, END)
     window.insert(0, f_num)
 
-def button_point():
+def button_point(elem=None):
     first_number = window.get()
     f_num = f"{first_number}."
 
@@ -112,7 +112,7 @@ def button_plus_minus():
     window.insert(0, f_num)
 
 
-def button_equal():
+def button_equal(elem=None):
     second_number = window.get()
     window.delete(0, END)
 
@@ -135,6 +135,68 @@ def check_decimal(number):
             number = f"0{number}"
         return float(number)
 
+
+#----- KEYBOARD PRESS LOGIC------------
+
+def one(digit=None):
+    return button_click(1)
+
+
+def two(digit):
+    return button_click(2)
+
+
+def three(digit):
+    return button_click(3)
+
+
+def four(digit):
+    return button_click(4)
+
+
+def five(digit):
+    return button_click(5)
+
+
+def six(digit):
+    return button_click(6)
+
+
+def seven(digit):
+    return button_click(7)
+
+
+def eight(digit):
+    return button_click(8)
+
+
+def nine(digit):
+    return button_click(9)
+
+
+def zero(digit):
+    return button_click(0)
+
+
+root.bind('1', one)
+root.bind('2', two)
+root.bind('3', three)
+root.bind('4', four)
+root.bind('5', five)
+root.bind('6', six)
+root.bind('7', seven)
+root.bind('8', eight)
+root.bind('9', nine)
+root.bind('0', zero)
+
+root.bind('+', button_add)
+root.bind('-', button_subtract)
+root.bind('/', button_devide)
+root.bind('*', button_multiply)
+root.bind('.', button_point)
+root.bind('<Return>', button_equal)
+root.bind('<Delete>', button_clear)
+root.bind('<BackSpace>', button_back)
 
 # --------- THE INTERFACE ------------
 # button text font styles
