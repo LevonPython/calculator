@@ -92,7 +92,11 @@ def button_back():
     window.insert(0, f_num)
 
 def button_point():
-    return
+    first_number = window.get()
+    f_num = f"{first_number}."
+
+    window.delete(0, END)
+    window.insert(0, f_num)
 
 
 def button_plus_minus():
@@ -100,9 +104,9 @@ def button_plus_minus():
     backed = str(first_number)[0]
     global f_num
     if backed == '-':
-        f_num = abs(check_decimal(backed))
+        f_num = abs(check_decimal(first_number))
     else:
-        f_num = (check_decimal(backed))
+        f_num = check_decimal(f"-{(str(check_decimal(backed)))}")
 
     window.delete(0, END)
     window.insert(0, f_num)
@@ -113,19 +117,22 @@ def button_equal():
     window.delete(0, END)
 
     if math == "addition":
-        window.insert(0, f_num + int(second_number))
+        window.insert(0, f_num + check_decimal(second_number))
     elif math == "substract":
-        window.insert(0, f_num - int(second_number))
+        window.insert(0, f_num - check_decimal(second_number))
     elif math == "multiplication":
-        window.insert(0, f_num * int(second_number))
+        window.insert(0, round(f_num * check_decimal(second_number), 10))
     elif math == "division":
-        window.insert(0, f_num / int(second_number))
+        window.insert(0, round(f_num / check_decimal(second_number), 10))
 
 
 def check_decimal(number):
     if len(number.split('.')) == 1:
         return int(number)
     else:
+        # also check if input is for ex. <.1> instead of <0.1>
+        if number.split('.')[0] == "":
+            number = f"0{number}"
         return float(number)
 
 
