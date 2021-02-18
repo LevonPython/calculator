@@ -12,24 +12,35 @@ root.title("Standard calculator")
 # full_path = os.path.join(path, "pow.jpg")
 # print(full_path)
 fontStyle = tkFont.Font(size=32, family="Courier", weight="bold")
-window_maths = Entry(root, width=10, borderwidth=0, bg="#f2f2f2", justify='right', font=fontStyle)
+fontStyle2 = tkFont.Font(size=25, family="Courier")
+window_maths = Entry(root, width=10, borderwidth=0, bg="#f2f2f2", justify='right', font=fontStyle2)
 window_maths.grid(row=0, column=0, columnspan=4, padx=5, pady=5, ipady=2)
 
 window = Entry(root, width=10, borderwidth=0, bg="#f2f2f2", justify='right', font=fontStyle)
 window.grid(row=1, column=0, columnspan=4, padx=20, pady=12, ipady=22)
-# window.insert(0, "Insert your name")
+
+# set default digit zero in the window
+window.insert(0, 0)
+
+
 # ---------THE LOGIC ------------------
 
 # --------- THE MAIN LOGIC ------------
 def button_click(number=None):
-    # window.delete(0, END)
+    if window.get() == '0':
+        window.delete(0, END)
     current = window.get()
     window.delete(0, END)
     window.insert(0, f"{current}{number}")
 
+    math_curr = window_maths.get()
+    window_maths.delete(0, END)
+    window_maths.insert(0, f"{math_curr}{current}{number}")
+
 
 def button_clear(elem=None):
     window.delete(0, END)
+    window_maths.delete(0, END)
 
 
 def button_add(elem=None):
@@ -39,8 +50,9 @@ def button_add(elem=None):
     math = "addition"
     f_num = check_decimal(first_number)
     window.delete(0, END)
+
     window_maths.delete(0, END)
-    window_maths.insert(0, '+')
+    window_maths.insert(0, f"{first_number}+")
 
 
 def button_subtract(elem=None):
@@ -50,8 +62,9 @@ def button_subtract(elem=None):
     math = "substract"
     f_num = check_decimal(first_number)
     window.delete(0, END)
+
     window_maths.delete(0, END)
-    window_maths.insert(0, '-')
+    window_maths.insert(0, f"{first_number}-")
 
 
 def button_multiply(elem=None):
@@ -62,7 +75,7 @@ def button_multiply(elem=None):
     f_num = check_decimal(first_number)
     window.delete(0, END)
     window_maths.delete(0, END)
-    window_maths.insert(0, 'x')
+    window_maths.insert(0, f"{first_number}x")
 
 
 def button_devide(elem=None):
@@ -73,7 +86,7 @@ def button_devide(elem=None):
     f_num = check_decimal(first_number)
     window.delete(0, END)
     window_maths.delete(0, END)
-    window_maths.insert(0, '/')
+    window_maths.insert(0, f"{first_number}/")
 
 
 def button_fraction():
@@ -102,6 +115,7 @@ def button_back(elem=None):
     window.delete(0, END)
     window.insert(0, f_num)
 
+
 def button_point(elem=None):
     first_number = window.get()
     f_num = f"{first_number}."
@@ -126,18 +140,20 @@ def button_plus_minus():
 def button_equal(elem=None):
     second_number = window.get()
     window.delete(0, END)
-
+    result = 0
     if math == "addition":
-        window.insert(0, f_num + check_decimal(second_number))
+        result = f_num + check_decimal(second_number)
     elif math == "substract":
-        window.insert(0, f_num - check_decimal(second_number))
+        result = f_num - check_decimal(second_number)
     elif math == "multiplication":
-        window.insert(0, round(f_num * check_decimal(second_number), 10))
+        result = round(f_num * check_decimal(second_number), 10)
     elif math == "division":
-        window.insert(0, round(f_num / check_decimal(second_number), 10))
+        result = round(f_num / check_decimal(second_number), 10)
 
+    window.insert(0, result)
+    math_curr = window_maths.get()
     window_maths.delete(0, END)
-    window_maths.insert(0, '=')
+    window_maths.insert(0, f"{math_curr}={result}")
 
 
 def check_decimal(number):
@@ -150,7 +166,7 @@ def check_decimal(number):
         return float(number)
 
 
-#----- KEYBOARD PRESS LOGIC------------
+# ----- KEYBOARD PRESS LOGIC------------
 
 def one(digit=None):
     return button_click(1)
@@ -308,11 +324,9 @@ changeOnHover(button_point, "#8c929c", "#e6e9eb")
 changeOnHover(button_plus_minus, "#8c929c", "#e6e9eb")
 changeOnHover(button_add, "#8c929c", "#e6e9eb")
 changeOnHover(button_equal, "#5285d9", "#9dbff5")
-
 changeOnHover(button_clear, "#8c929c", "#e6e9eb")
 changeOnHover(button_subtract, "#8c929c", "#e6e9eb")
 changeOnHover(button_multiply, "#8c929c", "#e6e9eb")
-
 changeOnHover(button_devide, "#8c929c", "#e6e9eb")
 changeOnHover(button_fraction, "#8c929c", "#e6e9eb")
 changeOnHover(button_pow, "#8c929c", "#e6e9eb")
