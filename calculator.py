@@ -12,9 +12,9 @@ root.title("Standard calculator")
 # full_path = os.path.join(path, "pow.jpg")
 # print(full_path)
 fontStyle = tkFont.Font(size=32, family="Courier", weight="bold")
-fontStyle2 = tkFont.Font(size=25, family="Courier")
+fontStyle2 = tkFont.Font(size=18, family="Courier")
 window_maths = Entry(root, width=10, borderwidth=0, bg="#f2f2f2", justify='right', font=fontStyle2)
-window_maths.grid(row=0, column=0, columnspan=4, padx=5, pady=5, ipady=2)
+window_maths.grid(row=0, column=0, columnspan=4, padx=5, pady=5, ipadx=20, ipady=2)
 
 window = Entry(root, width=10, borderwidth=0, bg="#f2f2f2", justify='right', font=fontStyle)
 window.grid(row=1, column=0, columnspan=4, padx=20, pady=12, ipady=22)
@@ -27,7 +27,7 @@ window.insert(0, 0)
 
 # --------- THE MAIN LOGIC ------------
 def button_click(number=None):
-    if window.get() == '0':
+    if window.get() in ('0', 'x', '+', '-', '/'):
         window.delete(0, END)
     current = window.get()
     window.delete(0, END)
@@ -35,12 +35,17 @@ def button_click(number=None):
 
     math_curr = window_maths.get()
     window_maths.delete(0, END)
-    window_maths.insert(0, f"{math_curr}{current}{number}")
+    window_maths.insert(0, f"{math_curr}{number}")
 
 
 def button_clear(elem=None):
     window.delete(0, END)
     window_maths.delete(0, END)
+    window.insert(0, 0)
+
+
+def double_check(sign):
+    return sign in ('x', '+', '-', '/')
 
 
 def button_add(elem=None):
@@ -48,11 +53,19 @@ def button_add(elem=None):
     global f_num
     global math
     math = "addition"
-    f_num = check_decimal(first_number)
-    window.delete(0, END)
 
-    window_maths.delete(0, END)
-    window_maths.insert(0, f"{first_number}+")
+    if not double_check(first_number):
+        f_num = check_decimal(first_number)
+
+        window_maths.delete(0, END)
+        window_maths.insert(0, f"{first_number}+")
+    else:
+        sign_replace = window_maths.get()
+        window_maths.delete(0, END)
+        window_maths.insert(0, f"{sign_replace[:-1]}+")
+    window.delete(0, END)
+    window.insert(0, "+")
+
 
 
 def button_subtract(elem=None):
@@ -60,11 +73,19 @@ def button_subtract(elem=None):
     global f_num
     global math
     math = "substract"
-    f_num = check_decimal(first_number)
-    window.delete(0, END)
 
-    window_maths.delete(0, END)
-    window_maths.insert(0, f"{first_number}-")
+    if not double_check(first_number):
+        f_num = check_decimal(first_number)
+
+        window_maths.delete(0, END)
+        window_maths.insert(0, f"{first_number}-")
+    else:
+        sign_replace = window_maths.get()
+        window_maths.delete(0, END)
+        window_maths.insert(0, f"{sign_replace[:-1]}-")
+
+    window.delete(0, END)
+    window.insert(0, "-")
 
 
 def button_multiply(elem=None):
@@ -72,10 +93,19 @@ def button_multiply(elem=None):
     global f_num
     global math
     math = "multiplication"
-    f_num = check_decimal(first_number)
+
+    if not double_check(first_number):
+        f_num = check_decimal(first_number)
+
+        window_maths.delete(0, END)
+        window_maths.insert(0, f"{first_number}x")
+    else:
+        sign_replace = window_maths.get()
+        window_maths.delete(0, END)
+        window_maths.insert(0, f"{sign_replace[:-1]}*")
+
     window.delete(0, END)
-    window_maths.delete(0, END)
-    window_maths.insert(0, f"{first_number}x")
+    window.insert(0, "x")
 
 
 def button_devide(elem=None):
@@ -83,10 +113,18 @@ def button_devide(elem=None):
     global f_num
     global math
     math = "division"
-    f_num = check_decimal(first_number)
+
+    if not double_check(first_number):
+        f_num = check_decimal(first_number)
+        window_maths.delete(0, END)
+        window_maths.insert(0, f"{first_number}/")
+    else:
+        sign_replace = window_maths.get()
+        window_maths.delete(0, END)
+        window_maths.insert(0, f"{sign_replace[:-1]}/")
+
     window.delete(0, END)
-    window_maths.delete(0, END)
-    window_maths.insert(0, f"{first_number}/")
+    window.insert(0, "/")
 
 
 def button_fraction():
