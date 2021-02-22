@@ -205,57 +205,20 @@ def check_decimal(number):
 
 
 # ----- KEYBOARD PRESS LOGIC------------
-
-def one(digit=None):
-    return button_click(1)
-
-
-def two(digit):
-    return button_click(2)
+def press(digit=None):
+    return button_click(digit)
 
 
-def three(digit):
-    return button_click(3)
-
-
-def four(digit):
-    return button_click(4)
-
-
-def five(digit):
-    return button_click(5)
-
-
-def six(digit):
-    return button_click(6)
-
-
-def seven(digit):
-    return button_click(7)
-
-
-def eight(digit):
-    return button_click(8)
-
-
-def nine(digit):
-    return button_click(9)
-
-
-def zero(digit):
-    return button_click(0)
-
-
-root.bind('1', one)
-root.bind('2', two)
-root.bind('3', three)
-root.bind('4', four)
-root.bind('5', five)
-root.bind('6', six)
-root.bind('7', seven)
-root.bind('8', eight)
-root.bind('9', nine)
-root.bind('0', zero)
+root.bind('1', lambda event, parameter=1: press(parameter))
+root.bind('2', lambda event, parameter=2: press(parameter))
+root.bind('3', lambda event, parameter=3: press(parameter))
+root.bind('4', lambda event, parameter=4: press(parameter))
+root.bind('5', lambda event, parameter=5: press(parameter))
+root.bind('6', lambda event, parameter=6: press(parameter))
+root.bind('7', lambda event, parameter=7: press(parameter))
+root.bind('8', lambda event, parameter=8: press(parameter))
+root.bind('9', lambda event, parameter=9: press(parameter))
+root.bind('0', lambda event, parameter=0: press(parameter))
 
 root.bind('+', button_add)
 root.bind('-', button_subtract)
