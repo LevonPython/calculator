@@ -4,7 +4,32 @@ import math
 import os
 
 
-class Base:
+def check_decimal(number):
+    number = str(number)
+    if len(number.split('.')) == 1:
+        return int(number)
+    else:
+        # also check if input is for ex. <.1> instead of <0.1>
+        if number.split('.')[0] == "":
+            number = f"0{number}"
+        return float(number)
+
+
+def change_on_hover(button, on_hover, on_leave):
+    # adjusting backgroung of the widget
+    # background on entering widget
+    button.bind("<Enter>", func=lambda e: button.config(
+        background=on_hover))
+    # background color on leaving widget
+    button.bind("<Leave>", func=lambda e: button.config(
+        background=on_leave))
+
+
+def double_check(sign):
+    return sign in ('x', '+', '-', '/')
+
+
+class Window:
 
     def __init__(self):
         self.root = Tk()
@@ -30,32 +55,26 @@ class Base:
         self.fontStyle2 = tkFont.Font(size=17)
         self.fontStyle3 = tkFont.Font(size=13)
 
-    # --------- THE MAIN LOGIC ------------
-    def button_click(self, number=None):
-        if self.window.get() in ('0', 'x', '+', '-', '/'):
-            self.window.delete(0, END)
-        current = self.window.get()
-        self.window.delete(0, END)
-        self.window.insert(0, f"{current}{number}")
-        math_curr = self.window_maths.get()
-        self.window_maths.delete(0, END)
-        self.window_maths.insert(0, f"{math_curr}{number}")
 
+class Functionality(Window):
+
+    def __init__(self):
+        super().__init__()
+
+        self.f_num = ''
+        self.math = ''
+
+    # --------- THE MAIN LOGIC ------------
     def button_clear(self, elem=None):
         self.window.delete(0, END)
         self.window_maths.delete(0, END)
         self.window.insert(0, 0)
 
-    def double_check(self, sign):
-        return sign in ('x', '+', '-', '/')
-
     def button_add(self, elem=None):
         first_number = self.window.get()
-        global f_num
-        global math
-        math = "addition"
-        if not self.double_check(first_number):
-            f_num = self.check_decimal(first_number)
+        self.math = "addition"
+        if not double_check(first_number):
+            self.f_num = check_decimal(first_number)
             self.window_maths.delete(0, END)
             self.window_maths.insert(0, f"{first_number}+")
         else:
@@ -67,11 +86,9 @@ class Base:
 
     def button_subtract(self, elem=None):
         first_number = self.window.get()
-        global f_num
-        global math
-        math = "substract"
-        if not self.double_check(first_number):
-            f_num = self.check_decimal(first_number)
+        self.math = "substract"
+        if not double_check(first_number):
+            self.f_num = check_decimal(first_number)
             self.window_maths.delete(0, END)
             self.window_maths.insert(0, f"{first_number}-")
         else:
@@ -83,11 +100,9 @@ class Base:
 
     def button_multiply(self, elem=None):
         first_number = self.window.get()
-        global f_num
-        global math
-        math = "multiplication"
-        if not self.double_check(first_number):
-            f_num = self.check_decimal(first_number)
+        self.math = "multiplication"
+        if not double_check(first_number):
+            self.f_num = check_decimal(first_number)
             self.window_maths.delete(0, END)
             self.window_maths.insert(0, f"{first_number}x")
         else:
@@ -99,11 +114,9 @@ class Base:
 
     def button_devide(self, elem=None):
         first_number = self.window.get()
-        global f_num
-        global math
-        math = "division"
-        if not self.double_check(first_number):
-            f_num = self.check_decimal(first_number)
+        self.math = "division"
+        if not double_check(first_number):
+            self.f_num = check_decimal(first_number)
             self.window_maths.delete(0, END)
             self.window_maths.insert(0, f"{first_number}/")
         else:
@@ -131,70 +144,48 @@ class Base:
     def button_back(self, elem=None):
         first_number = self.window.get()
         backed = str(first_number)[:-1]
-        global f_num
-        f_num = self.check_decimal(backed)
+        self.f_num = check_decimal(backed)
         self.window.delete(0, END)
-        self.window.insert(0, f_num)
+        self.window.insert(0, self.f_num)
 
     def button_point(self, elem=None):
         first_number = self.window.get()
-        f_num = f"{first_number}."
+        self.f_num = f"{first_number}."
         self.window.delete(0, END)
-        self.window.insert(0, f_num)
+        self.window.insert(0, self.f_num)
 
     def button_plus_minus(self):
         first_number = self.window.get()
         backed = str(first_number)[0]
-        global f_num
         if backed == '-':
-            f_num = abs(self.check_decimal(first_number))
+            self.f_num = abs(check_decimal(first_number))
         else:
-            f_num = self.check_decimal(f"-{(str(self.check_decimal(backed)))}")
+            self.f_num = check_decimal(f"-{(str(check_decimal(backed)))}")
         self.window.delete(0, END)
-        self.window.insert(0, f_num)
+        self.window.insert(0, self.f_num)
 
     def button_equal(self, elem=None):
         second_number = self.window.get()
         self.window.delete(0, END)
         result = 0
-        global f_num
-        if math == "addition":
-            result = f_num + self.check_decimal(second_number)
-        elif math == "substract":
-            result = f_num - self.check_decimal(second_number)
-        elif math == "multiplication":
-            result = round(f_num * self.check_decimal(second_number), 10)
-        elif math == "division":
-            result = round(f_num / self.check_decimal(second_number), 10)
+        if self.math == "addition":
+            result = check_decimal(self.f_num) + check_decimal(second_number)
+        elif self.math == "substract":
+            result = check_decimal(self.f_num) - check_decimal(second_number)
+        elif self.math == "multiplication":
+            result = round(check_decimal(self.f_num) * check_decimal(second_number), 10)
+        elif self.math == "division":
+            result = round(check_decimal(self.f_num) / check_decimal(second_number), 10)
         self.window.insert(0, result)
         math_curr = self.window_maths.get()
         self.window_maths.delete(0, END)
         self.window_maths.insert(0, f"{math_curr}={result}")
 
-    def check_decimal(self, number):
-        if len(number.split('.')) == 1:
-            return int(number)
-        else:
-            # also check if input is for ex. <.1> instead of <0.1>
-            if number.split('.')[0] == "":
-                number = f"0{number}"
-            return float(number)
 
-    def changeOnHover(self, button, on_hover, on_leave):
-        # adjusting backgroung of the widget
-        # background on entering widget
-        button.bind("<Enter>", func=lambda e: button.config(
-            background=on_hover))
-        # background color on leaving widget
-        button.bind("<Leave>", func=lambda e: button.config(
-            background=on_leave))
+class Interface(Functionality):
 
-    # KEYBOARD PRESS LOGIC
-    def press(self, digit=None):
-        return self.button_click(digit)
-
-
-    def main(self):
+    def __init__(self):
+        super().__init__()
         # --------- THE INTERFACE ------------
         # BUTTONS
         button_1 = Button(self.root, text="1", padx=29, pady=11, bg='white', bd=0, font=self.fontStyle,
@@ -264,38 +255,41 @@ class Base:
         button_pow.grid(row=3, column=1)
         button_sqrt.grid(row=3, column=2)
         button_back.grid(row=2, column=3)
-        self.changeOnHover(button_1, "#8c929c", "white")
-        self.changeOnHover(button_2, "#8c929c", "white")
-        self.changeOnHover(button_3, "#8c929c", "white")
-        self.changeOnHover(button_4, "#8c929c", "white")
-        self.changeOnHover(button_5, "#8c929c", "white")
-        self.changeOnHover(button_6, "#8c929c", "white")
-        self.changeOnHover(button_7, "#8c929c", "white")
-        self.changeOnHover(button_8, "#8c929c", "white")
-        self.changeOnHover(button_9, "#8c929c", "white")
-        self.changeOnHover(button_0, "#8c929c", "white")
-        self.changeOnHover(button_point, "#8c929c", "#e6e9eb")
-        self.changeOnHover(button_plus_minus, "#8c929c", "#e6e9eb")
-        self.changeOnHover(button_add, "#8c929c", "#e6e9eb")
-        self.changeOnHover(button_equal, "#5285d9", "#9dbff5")
-        self.changeOnHover(button_clear, "#8c929c", "#e6e9eb")
-        self.changeOnHover(button_subtract, "#8c929c", "#e6e9eb")
-        self.changeOnHover(button_multiply, "#8c929c", "#e6e9eb")
-        self.changeOnHover(button_devide, "#8c929c", "#e6e9eb")
-        self.changeOnHover(button_fraction, "#8c929c", "#e6e9eb")
-        self.changeOnHover(button_pow, "#8c929c", "#e6e9eb")
-        self.changeOnHover(button_sqrt, "#8c929c", "#e6e9eb")
-        self.changeOnHover(button_back, "#8c929c", "#e6e9eb")
+
+        # BUTTON COLOR HOVER
+        # function to change properties of button on hover
+        change_on_hover(button_1, "#8c929c", "white")
+        change_on_hover(button_2, "#8c929c", "white")
+        change_on_hover(button_3, "#8c929c", "white")
+        change_on_hover(button_4, "#8c929c", "white")
+        change_on_hover(button_5, "#8c929c", "white")
+        change_on_hover(button_6, "#8c929c", "white")
+        change_on_hover(button_7, "#8c929c", "white")
+        change_on_hover(button_8, "#8c929c", "white")
+        change_on_hover(button_9, "#8c929c", "white")
+        change_on_hover(button_0, "#8c929c", "white")
+        change_on_hover(button_point, "#8c929c", "#e6e9eb")
+        change_on_hover(button_plus_minus, "#8c929c", "#e6e9eb")
+        change_on_hover(button_add, "#8c929c", "#e6e9eb")
+        change_on_hover(button_equal, "#5285d9", "#9dbff5")
+        change_on_hover(button_clear, "#8c929c", "#e6e9eb")
+        change_on_hover(button_subtract, "#8c929c", "#e6e9eb")
+        change_on_hover(button_multiply, "#8c929c", "#e6e9eb")
+        change_on_hover(button_devide, "#8c929c", "#e6e9eb")
+        change_on_hover(button_fraction, "#8c929c", "#e6e9eb")
+        change_on_hover(button_pow, "#8c929c", "#e6e9eb")
+        change_on_hover(button_sqrt, "#8c929c", "#e6e9eb")
+        change_on_hover(button_back, "#8c929c", "#e6e9eb")
         self.root.bind('1', lambda event, parameter=1: self.press(parameter))
-        self.root.bind('2', lambda event, parameter=2: self.two(parameter))
-        self.root.bind('3', lambda event, parameter=2: self.three(parameter))
-        self.root.bind('4', lambda event, parameter=2: self.four(parameter))
-        self.root.bind('5', lambda event, parameter=2: self.five(parameter))
-        self.root.bind('6', lambda event, parameter=2: self.six(parameter))
-        self.root.bind('7', lambda event, parameter=2: self.seven(parameter))
-        self.root.bind('8', lambda event, parameter=2: self.eight(parameter))
-        self.root.bind('9', lambda event, parameter=2: self.nine(parameter))
-        self.root.bind('0', lambda event, parameter=2: self.zero(parameter))
+        self.root.bind('2', lambda event, parameter=2: self.press(parameter))
+        self.root.bind('3', lambda event, parameter=3: self.press(parameter))
+        self.root.bind('4', lambda event, parameter=4: self.press(parameter))
+        self.root.bind('5', lambda event, parameter=5: self.press(parameter))
+        self.root.bind('6', lambda event, parameter=6: self.press(parameter))
+        self.root.bind('7', lambda event, parameter=7: self.press(parameter))
+        self.root.bind('8', lambda event, parameter=8: self.press(parameter))
+        self.root.bind('9', lambda event, parameter=9: self.press(parameter))
+        self.root.bind('0', lambda event, parameter=0: self.press(parameter))
         self.root.bind('+', self.button_add)
         self.root.bind('-', self.button_subtract)
         self.root.bind('/', self.button_devide)
@@ -304,11 +298,29 @@ class Base:
         self.root.bind('<Return>', self.button_equal)
         self.root.bind('<Delete>', self.button_clear)
         self.root.bind('<BackSpace>', self.button_back)
-        # BUTTON COLOR HOVER
-        # function to change properties of button on hover
+
+    def button_click(self, number=None):
+        if self.window.get() in ('0', 'x', '+', '-', '/'):
+            self.window.delete(0, END)
+        current = self.window.get()
+        self.window.delete(0, END)
+        self.window.insert(0, f"{current}{number}")
+        math_curr = self.window_maths.get()
+        self.window_maths.delete(0, END)
+        self.window_maths.insert(0, f"{math_curr}{number}")
+
+    # KEYBOARD PRESS LOGIC
+    def press(self, digit=None):
+        return self.button_click(digit)
+
+
+class Main(Interface):
+
+    def __init__(self):
+        super().__init__()
+
         self.root.mainloop()
 
 
 if __name__ == "__main__":
-    st = Base()
-    st.main()
+    start = Main()
