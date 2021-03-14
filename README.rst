@@ -34,7 +34,7 @@ There is no installation needed if you have python >3.0 version already installe
 ============
 How it works
 ============
-Just run the  `calculator OOP <https://github.com/LevonPython/calculator/blob/main/calculator_OOP.py>`_ or `calculator <https://github.com/LevonPython/calculator/blob/main/calculator.py>`_ file via any python interpreter.
+Just run the  `calculator_OOP.py <https://github.com/LevonPython/calculator/blob/main/calculator_OOP.py>`_ or `calculator.py <https://github.com/LevonPython/calculator/blob/main/calculator.py>`_ file via any python interpreter.
 
 
 ============
