@@ -20,7 +20,7 @@ Introduction
 This application is a copied version of windows standard calculator. 
 The application is written in python (used libraries: Tkinter, os, math).
 
-* The `Tkinter <https://docs.python.org/3/library/tkinter.html>` package (“Tk interface”) is the standard Python interface to the Tk GUI toolkit. 
+* The   `Tkinter <https://docs.python.org/3/library/tkinter.html>` package (“Tk interface”) is the standard Python interface to the Tk GUI toolkit. 
 * The `os <https://docs.python.org/3/library/os.html>` module provides a portable way of using operating system dependent functionality. 
 * The `math <https://docs.python.org/3/library/math.html>` module provides access to the mathematical functions defined by the C standard.  
 
