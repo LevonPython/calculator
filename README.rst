@@ -1,6 +1,6 @@
 .. image:: https://github.com/LevonPython/calculator/blob/main/st_calculator.png
    :align: left
-   :target: https://github.com/LevonPython/calculator/blob/main/st_calculator.png
+   :target: https://raw.githubusercontent.com/LevonPython/calculator/main/st_calculator.png
    :alt: Standard calculator Logo
 
 ============
